@@ -247,7 +247,7 @@ void oslobodiMemoriju(Cvijet** skladiste, Prodaja** prodaje) {
 	}
 }
 
-int usporediCvijet(const void* a, const void* b) {
+static int usporediCvijet(const void* a, const void* b) {
 	const Cvijet* cv1 = (const Cvijet*)a;
 	const Cvijet* cv2 = (const Cvijet*)b;
 	return strcmp(cv1->naziv, cv2->naziv);
