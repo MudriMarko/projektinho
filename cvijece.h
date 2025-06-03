@@ -43,5 +43,5 @@ void ucitajSkladisteIzdatoteke(Cvijet** skladiste, int* brojCvjetova, int* kapac
 void oslobodiMemoriju(Cvijet** skladiste, Prodaja** prodaje);
 int usporediCvijet(const void* a, const void* b);
 Cvijet* pronadjiCvijet(const Cvijet* skladiste, int brojCvjetova, const char* naziv);
-
+extern int brojPozivaIzbornika;
 #endif
