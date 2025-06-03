@@ -32,7 +32,7 @@ int main() {
 		int tempIzbor;
 		if (scanf("%d", &tempIzbor) != 1) {
 			printf("Neispravan unos!\n");
-			while (getchar() != '\n'); // očisti buffer
+			while (getchar() != '\n');
 			continue;
 		}
 		izbor = (Izbornik)tempIzbor;
