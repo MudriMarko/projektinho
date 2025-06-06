@@ -1,16 +1,16 @@
 ﻿#include "cvijece.h"
-
+//7. Organizacija izvornog kôda.
 void main_menu(void) {
     int choice = 0;
     do {
-        printf("\n--- Glavni izbornik ---\n");
-        printf("1. Dodaj cvijet\n");
+        printf("\n---cvjecarna sibinj---\n");  //10. Izbornik/podizbornici.
+        printf("1. Dodaj cvijet\n");            //1. CRUID
         printf("2. Prikaz cvjetova\n");
-        printf("3. Ažuriraj cvijet\n");
+        printf("3. Azuriraj cvijet\n");
         printf("4. Obrisi cvijet\n");
         printf("5. Sortiraj cvjetove\n");
-        printf("6. Pretraži cvijet\n");
-        printf("7. Kupi cvijeće\n");
+        printf("6. Pretrazi cvijet\n");
+        printf("7. Kupi cvijece\n");
         printf("8. Operacije na datotekama\n");
         printf("9. Izlaz\n");
         printf("Odaberite opciju: ");
@@ -53,14 +53,14 @@ void main_menu(void) {
                 printf("Podaci su spremljeni.\n");
             }
             else {
-                printf("Greška pri spremanju podataka!\n");
+                printf("Greska pri spremanju podataka!\n");
             }
-            safe_free((void**)&flower_list);
+            safe_free((void**)&flower_list); //18. Sigurno brisanje memorije koja je dinamički zauzeta,
             flower_count = 0;
             printf("Izlaz iz programa.\n");
             break;
         default:
-            printf("Nevažeći odabir. Pokušajte ponovno.\n");
+            printf("Nevazeci odabir. Pokusajte ponovno.\n");
             break;
         }
     } while (choice != MAIN_MENU_EXIT);
@@ -68,12 +68,12 @@ void main_menu(void) {
 
 int main(void) {
     if (load_flowers() != 0) {
-        printf("Došlo je do problema pri učitavanju baze cvjetova.\n");
+        printf("Doslo je do problema pri ucitavanju baze cvjetova.\n");
         flower_list = NULL;
         flower_count = 0;
     }
     else {
-        printf("Baza cvjetova učitana. Broj cvjetova: %d\n", flower_count);
+        printf("Baza cvjetova ucitana. Broj cvjetova: %d\n", flower_count);
     }
 
     main_menu();
