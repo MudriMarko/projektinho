@@ -13,11 +13,11 @@
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 
 typedef union {
-    int quantity;        
-    float weight;         
+    int quantity;
+    float weight;
 } FlowerAttribute;
 
-typedef struct {
+typedef struct {            //13. Generalno upotreba struktura i funkcija.
     int Id;
     char Name[MAX_NAME_LENGTH];
     float Price;
@@ -45,16 +45,16 @@ typedef enum {
 } FileOpsOption;
 
 
-extern Flower* flower_list;
+extern Flower* flower_list; //8. Primjena extern ključne riječi za globalne varijable.
 extern int flower_count;
 
-void add_flower(void);
+void add_flower(void);  //5. Imenovanje identifikatora
 void list_flowers(void);
 void update_flower(void);
 void delete_flower(void);
 void sort_flowers(void);
 void search_flowers(void);
-int compare_by_id(const void* a, const void* b);
+int compare_by_id(const void* a, const void* b);  //12. Generalno upotreba pokazivača tamo gdje su potrebni.
 int compare_by_price(const void* a, const void* b);
 void quicksort_recursive(void* base, int left, int right, int (*cmp)(const void*, const void*));
 void print_flower(const Flower* f);
