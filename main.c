@@ -1,14 +1,14 @@
-﻿#include "cvijece.h"
-//7. Organizacija izvornog kôda.
+#include "cvijece.h"
+
 void main_menu(void) {
     int choice = 0;
     do {
-        printf("\n---cvjecarna sibinj---\n");  //10. Izbornik/podizbornici.
-        printf("1. Dodaj cvijet\n");            //1. CRUID
-        printf("2. Prikaz cvjetova\n");
+        printf("\n--- Glavni izbornik ---\n");
+        printf("1. Dodaj cvijet\n");                 //1. CRUID
+        printf("2. Prikaz cvjetova\n");              //10. izbornik
         printf("3. Azuriraj cvijet\n");
         printf("4. Obrisi cvijet\n");
-        printf("5. Sortiraj cvjetove\n");
+        printf("5. sortiraj cvjetove\n");
         printf("6. Pretrazi cvijet\n");
         printf("7. Kupi cvijece\n");
         printf("8. Operacije na datotekama\n");
@@ -22,7 +22,7 @@ void main_menu(void) {
         }
         clear_input_buffer();
 
-        switch (choice) {
+        switch (choice) {                           
         case MAIN_MENU_ADD:
             add_flower();
             break;
@@ -48,14 +48,14 @@ void main_menu(void) {
             file_ops_menu();
             break;
         case MAIN_MENU_EXIT:
-            printf("Spremanje podataka...\n");
+            printf("spremanje podataka...\n");
             if (save_flowers() == 0) {
                 printf("Podaci su spremljeni.\n");
             }
             else {
                 printf("Greska pri spremanju podataka!\n");
             }
-            safe_free((void**)&flower_list); //18. Sigurno brisanje memorije koja je dinamički zauzeta,
+            safe_free((void**)&flower_list);
             flower_count = 0;
             printf("Izlaz iz programa.\n");
             break;
