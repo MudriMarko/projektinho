@@ -9,19 +9,19 @@
 #define MAX_NAME_LENGTH 50
 #define FILE_NAME "cvijece.dat"
 
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))  //9. makroi i inline funkcije
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 
-typedef union {
-    int quantity;
-    float weight;
+typedef union {   //4. typedef sa unijom
+    int quantity;        
+    float weight;         
 } FlowerAttribute;
 
-typedef struct {            //13. Generalno upotreba struktura i funkcija.
+typedef struct {   //3. slozeni tip podatka
     int Id;
-    char Name[MAX_NAME_LENGTH];
+    char Name[MAX_NAME_LENGTH];                //15. staticka polja
     float Price;
-    FlowerAttribute Attribute;
+    FlowerAttribute Attribute;    //5. Pascalcase
     enum { STOCK_QUANTITY, STOCK_WEIGHT } AttributeType;
 } Flower;
 
@@ -33,11 +33,11 @@ typedef enum {
     MAIN_MENU_SORT,
     MAIN_MENU_SEARCH,
     MAIN_MENU_BUY,
-    MAIN_MENU_FILE_OPS,
+    MAIN_MENU_FILE_OPS, 
     MAIN_MENU_EXIT
 } MainMenuOption;
 
-typedef enum {
+typedef enum {                  //11. enum
     FILE_OPS_RENAME = 1,
     FILE_OPS_COPY,
     FILE_OPS_REMOVE,
@@ -45,19 +45,15 @@ typedef enum {
 } FileOpsOption;
 
 
-extern Flower* flower_list; //8. Primjena extern ključne riječi za globalne varijable.
+extern Flower* flower_list;  //8. extern
 extern int flower_count;
 
-void add_flower(void);  //5. Imenovanje identifikatora
+void add_flower(void);
 void list_flowers(void);
 void update_flower(void);
 void delete_flower(void);
 void sort_flowers(void);
-void search_flowers(void);
-int compare_by_id(const void* a, const void* b);  //12. Generalno upotreba pokazivača tamo gdje su potrebni.
-int compare_by_price(const void* a, const void* b);
-void quicksort_recursive(void* base, int left, int right, int (*cmp)(const void*, const void*));
-void print_flower(const Flower* f);
+void search_flowers(void);   
 void clear_input_buffer(void);
 int load_flowers(void);
 int save_flowers(void);
@@ -66,10 +62,11 @@ void rename_file(const char* old_name, const char* new_name);
 void remove_file(const char* filename);
 void main_menu(void);
 void file_ops_menu(void);
-void* safe_malloc(size_t size);
-void* safe_realloc(void* ptr, size_t size);
-void safe_free(void** ptr);
+void* safe_malloc(size_t size);                     //16.dinamicko zauzimanje memorije
+void* safe_realloc(void* ptr, size_t size);            //17. malloc, realloc, free
+void safe_free(void** ptr);                             //18.sigurno brisanje memorije
 void buy_flowers(void);
 void delete_flower_by_id(int id);
 
 #endif
+
