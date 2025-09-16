@@ -1,14 +1,16 @@
+//7. organizacija izvornog koda
+//13. strukture i funkcije
 #include "cvijece.h"
 
-Flower* flower_list = NULL; //3. Odabir konkretnih složenih tipova podataka za rad sa specifičnim objektima.
-int flower_count = 0; //2. Odabir konkretnih primitivnih tipova podataka za rad s cjelobrojnim i realnim konstantama.
+Flower* flower_list = NULL;
+int flower_count = 0;    //2. primitivni tip podataka
 
 #define SAFE_FREE(p) do { if ((p) != NULL) { free(p); (p) = NULL; } } while(0)
 
-void* safe_malloc(size_t size) { //17. Koristiti funkcije malloc(), calloc(), realloc(), free() – neku od njih, ako ne i sve.
+void* safe_malloc(size_t size) {
     void* ptr = malloc(size);
     if (!ptr) {
-        perror("malloc nije uspio");
+        perror("malloc failed");
         exit(EXIT_FAILURE);
     }
     return ptr;
@@ -17,14 +19,14 @@ void* safe_malloc(size_t size) { //17. Koristiti funkcije malloc(), calloc(), re
 void* safe_realloc(void* ptr, size_t size) {
     void* new_ptr = realloc(ptr, size);
     if (!new_ptr) {
-        perror("realloc nije uspio");
+        perror("realloc failed");
         free(ptr);
         exit(EXIT_FAILURE);
     }
     return new_ptr;
 }
 
-void safe_free(void** ptr) {  //9. Ako su funkcije jednostavne koristiti makro funkcije ili inline funkcije
+void safe_free(void** ptr) {
     if (ptr && *ptr) {
         free(*ptr);
         *ptr = NULL;
@@ -36,14 +38,14 @@ void clear_input_buffer(void) {
     while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
-void print_flower(const Flower* f) {
+static void print_flower(const Flower* f) {                    //14. zastita parametara 6. kljucna rijec static
     if (!f) return;
-    printf("ID: %d | Ime: %s | Cijena: %.2f$ | ",
+    printf("ID: %d | Name: %s | Price: %.2f | ",
         f->Id, f->Name, f->Price);
     if (f->AttributeType == STOCK_QUANTITY)
-        printf("Kolicina: %d\n", f->Attribute.quantity);
+        printf("Quantity: %d\n", f->Attribute.quantity);
     else
-        printf("Tezina: %.3f kg\n", f->Attribute.weight);
+        printf("Weight: %.3f kg\n", f->Attribute.weight);
 }
 
 void add_flower(void) {
@@ -69,7 +71,7 @@ void add_flower(void) {
         return;
     }
 
-    printf("Odaberite 1 - kolicina 2 - tezina (kg): ");
+    printf("Odaberite tip atributa (1 - kolicina, 2 - tezina): ");
     int attr_type;
     if (scanf("%d", &attr_type) != 1) {
         printf("Neispravan unos.\n");
@@ -121,7 +123,7 @@ void update_flower(void) {
         return;
     }
     int id;
-    printf("Unesite ID cvijeta koji želite azurirati: ");
+    printf("Unesite ID cvijeta koji zelite azurirati: ");
     if (scanf("%d", &id) != 1) {
         printf("Neispravan unos.\n");
         clear_input_buffer();
@@ -142,7 +144,7 @@ void update_flower(void) {
                 return;
             }
 
-            printf("Odaberite 1 - kolicina 2 - tezina: ");
+            printf("Odaberite tip atributa (1 - kolicina, 2 - tezina): ");
             int attr_type;
             if (scanf("%d", &attr_type) != 1) {
                 printf("Neispravan unos.\n");
@@ -173,7 +175,7 @@ void update_flower(void) {
                 clear_input_buffer();
                 return;
             }
-            printf("Cvijet ažuriran.\n");
+            printf("Cvijet azuriran.\n");
             return;
         }
     }
@@ -207,15 +209,15 @@ void delete_flower(void) {
     printf("Cvijet s tim ID-em nije pronaden.\n");
 }
 
-int compare_by_id(const void* a, const void* b) {
+static int compare_by_id(const void* a, const void* b) {
     const Flower* f1 = (const Flower*)a;
-    const Flower* f2 = (const Flower*)b;
+    const Flower* f2 = (const Flower*)b;    //12. pokazivaci
     if (f1->Id < f2->Id) return -1;
     else if (f1->Id > f2->Id) return 1;
     else return 0;
 }
 
-int compare_by_price(const void* a, const void* b) {
+static int compare_by_price(const void* a, const void* b) {
     const Flower* f1 = (const Flower*)a;
     const Flower* f2 = (const Flower*)b;
     if (f1->Price < f2->Price) return -1;
@@ -223,7 +225,7 @@ int compare_by_price(const void* a, const void* b) {
     else return 0;
 }
 
-void quicksort_recursive(void* base, int left, int right, int (*cmp)(const void*, const void*)) {
+static void quicksort_recursive(void* base, int left, int right, int (*cmp)(const void*, const void*)) {       //25. rekurzija
     if (left >= right) return;
 
     int i = left, j = right;
@@ -260,8 +262,8 @@ void sort_flowers(void) {
     }
 
     if (choice == 1) {
-        qsort(flower_list, flower_count, sizeof(Flower), compare_by_id); //23. Sortiranje – preporuka koristiti ugrađenu qsort() funkciju, inače se može koristiti
-        printf("Sortirano po ID-u.\n");                                    //bilo koja  funkcija sortiranja.
+        qsort(flower_list, flower_count, sizeof(Flower), compare_by_id);            //23.sortiranje
+        printf("Sortirano po ID-u.\n");
     }
     else if (choice == 2) {
         qsort(flower_list, flower_count, sizeof(Flower), compare_by_price);
@@ -291,8 +293,7 @@ void search_flowers(void) {
 
     Flower key;
     key.Id = id;
-    Flower* found = (Flower*)bsearch(&key, flower_list, flower_count, sizeof(Flower), compare_by_id); // 24. Pretraživanje – preporuka koristiti ugrađenu bsearch()
-                                                                                               //funkciju, inače se može koristiti bilo koja funkcija pretrazivanja
+    Flower* found = (Flower*)bsearch(&key, flower_list, flower_count, sizeof(Flower), compare_by_id);       //24.pretrazivanje 26. pokazivaci na funkcije
     if (found) {
         printf("Pronaden cvijet:\n");
         print_flower(found);
@@ -303,14 +304,14 @@ void search_flowers(void) {
 }
 
 int copy_file(const char* src, const char* dest) {
-    FILE* f_src = fopen(src, "rb");             //19. Datoteke, koristiti tekstualnu ili binarnu, provjera pokazivača i zatvaranje datoteke
+    FILE* f_src = fopen(src, "rb");                         //19. rad s datotekama
     if (!f_src) {
         perror("Otvaranje izvornog fajla neuspjelo");
         return -1;
     }
     FILE* f_dest = fopen(dest, "wb");
     if (!f_dest) {
-        perror("Otvaranje odredišnog filea neuspjelo");
+        perror("Otvaranje odredisnog fajla neuspjelo");
         fclose(f_src);
         return -1;
     }
@@ -326,8 +327,8 @@ int copy_file(const char* src, const char* dest) {
         }
     }
 
-    if (ferror(f_src)) {  //22. Upravljati s pogreškama, errno, perror(), strerror(), feof(), ferror() – neku od njih ako ne sve.
-        perror("Greska pri čitanju iz datoteke");
+    if (ferror(f_src)) {
+        perror("Greska pri citanju iz datoteke");
     }
 
     fclose(f_src);
@@ -338,7 +339,7 @@ int copy_file(const char* src, const char* dest) {
 int load_flowers(void) {
     FILE* f = fopen(FILE_NAME, "rb");
     if (!f) {
-        if (errno == ENOENT) {
+        if (errno == ENOENT) {                    //22.upravljanje pogreskama
             printf("Datoteka ne postoji, kreira se nova baza.\n");
             flower_list = NULL;
             flower_count = 0;
@@ -350,22 +351,21 @@ int load_flowers(void) {
         }
     }
 
-    if (fseek(f, 0, SEEK_END) != 0) { //20. Koristiti funkcije fseek(), ftell(), rewind(), ovisno o potrebi – neku od njih ako ne sve.
-
-        perror("fseek neuspješan");
+    if (fseek(f, 0, SEEK_END) != 0) {               //20. fseek
+        perror("fseek neuspjesan");
         fclose(f);
         return -1;
     }
     long size = ftell(f);
     if (size < 0) {
-        perror("ftell neuspješan");
+        perror("ftell neuspjesan");
         fclose(f);
         return -1;
     }
     rewind(f);
 
     flower_count = (int)(size / sizeof(Flower));
-    flower_list = safe_malloc(flower_count * sizeof(Flower));  //14. Zaštita parametara kod svih funkcija.
+    flower_list = safe_malloc(flower_count * sizeof(Flower));
     size_t read_count = fread(flower_list, sizeof(Flower), flower_count, f);
 
     if (read_count != (size_t)flower_count) {
@@ -454,7 +454,7 @@ void buy_flowers(void) {
 
         if (flower->Attribute.quantity == 0) {
             char choice;
-            printf("Kolicina je sada 0. Zelite li obrisati ovaj cvijet iz skladista? (d/n): ");
+            printf("Kolicina je sada 0. zelite li obrisati ovaj cvijet iz skladista? (d/n): ");
             scanf(" %c", &choice);
             if (choice == 'd' || choice == 'D') {
                 delete_flower_by_id(id);
@@ -481,12 +481,12 @@ void buy_flowers(void) {
             return;
         }
         flower->Attribute.weight -= weight;
-        printf("Kupljeno %.3f kg cvijeca %s. Nova težina: %.3f kg\n",
+        printf("Kupljeno %.3f kg cvijeca %s. Nova tezina: %.3f kg\n",
             weight, flower->Name, flower->Attribute.weight);
 
-        if (flower->Attribute.weight <= 0.001f) {
+        if (flower->Attribute.weight <= 0.001f) { 
             char choice;
-            printf("Tezina je sada 0. Zelite li obrisati ovaj cvijet iz skladista? (d/n): ");
+            printf("Tezina je sada 0. zelite li obrisati ovaj cvijet iz skladista? (d/n): ");
             scanf(" %c", &choice);
             if (choice == 'd' || choice == 'D') {
                 delete_flower_by_id(id);
@@ -503,7 +503,7 @@ void rename_file(const char* old_name, const char* new_name) {
     }
 }
 
-void remove_file(const char* filename) { //21. Koristiti funkcije remove(), rename(), po potrebi implementirati funkciju za kopiranje datoteka.
+void remove_file(const char* filename) {                     //21.remove
     if (remove(filename) == 0) {
         printf("Datoteka %s obrisana.\n", filename);
     }
@@ -515,7 +515,7 @@ void delete_flower_by_id(int id) {
     for (int i = 0; i < flower_count; i++) {
         if (flower_list[i].Id == id) {
             for (int j = i; j < flower_count - 1; j++) {
-                flower_list[j] = flower_list[j + 1];  //16. Koristiti dinamičko zauzimanje memorije za bilo koji tip podatka, osobito za složene tipove podataka.
+                flower_list[j] = flower_list[j + 1];
             }
             flower_count--;
             flower_list = safe_realloc(flower_list, flower_count * sizeof(Flower));
@@ -576,7 +576,7 @@ void file_ops_menu(void) {
             printf("Povratak na glavni izbornik...\n");
             break;
         default:
-            printf("Neispravna opcija, pokušajte ponovno.\n");
+            printf("Neispravna opcija, pokusajte ponovno.\n");
             break;
         }
     } while (choice != FILE_OPS_BACK);
